@@ -1,6 +1,7 @@
 package com.ecomm.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,13 +26,25 @@ public class UserService {
         return userlist;
     }
 
-    public User findByUserId(Long id){
-        for(User user:userlist){
+    public Optional<User> findByUserId(Long id){
+        /* for(User user:userlist){
             if(user.getId().equals(id)){
                 return user;
             }
         }
-        return null;
+        return null; */
+        return userlist.stream().filter(user -> user.getId().equals(id)).findFirst();
+    }
+
+    public boolean updateuser(Long id, User updateduser){
+        for(User existinguser:userlist){
+            if(existinguser.getId().equals(id)){
+                existinguser.setFirstname(updateduser.getFirstname());
+                existinguser.setLastname(updateduser.getLastname());
+                return true;
+            }
+        }
+        return false;
     }
 
 
