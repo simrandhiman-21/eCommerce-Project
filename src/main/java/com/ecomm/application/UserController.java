@@ -16,36 +16,36 @@ public class UserController {
     private  UserService userService;
 
 
-    //@GetMapping("/getallusers")
-    @RequestMapping(value = "getallusers" ,method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getAllProducts() {
-        return ResponseEntity.ok(userService.findAllUsers());
+    //@GetMapping("/users")
+    @RequestMapping(value = "users" ,method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping("/adduser")
-    public ResponseEntity<String> createProduct(@RequestBody User user) {
-        userService.saveUser(user);
+    @PostMapping
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+        userService.createUser(user);
         return new ResponseEntity<>("User added Successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/userby/{id}")
-    public ResponseEntity<User> getProductById(@PathVariable Long id) {
-        Optional<User> user=userService.findByUserId(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        Optional<User> user=userService.getUserById(id);
             if(user==null){
             return ResponseEntity.notFound().build();
         }
         return new ResponseEntity<>(user.get(),HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id , @RequestBody User user){
-        boolean updated= userService.updateuser(id,user);
+        boolean updated= userService.updateUser(id,user);
         if(updated) return new ResponseEntity<>("User Updated ",HttpStatus.OK);
         return new ResponseEntity<>("User NOT Found",HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
         return "User deleted with id: " + id;
     }

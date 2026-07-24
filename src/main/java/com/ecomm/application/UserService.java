@@ -14,6 +14,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    /*
     //Crud using List<User>
     ArrayList<User> userlist=new ArrayList<User>();
 
@@ -32,7 +33,7 @@ public class UserService {
                 return user;
             }
         }
-        return null; */
+        return null;
         return userlist.stream().filter(user -> user.getId().equals(id)).findFirst();
     }
 
@@ -43,6 +44,41 @@ public class UserService {
                 existinguser.setLastname(updateduser.getLastname());
                 return true;
             }
+        }
+        return false;
+    }
+
+
+    public void deleteUserById(Long id){
+        userRepository.deleteById(id);
+    }
+    */
+
+    public void createUser(User user){
+        userRepository.save(user);
+    }
+
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+
+    public Optional<User> getUserById(Long id){
+        return userRepository.findById(id);
+    }
+
+    public boolean updateUser(Long id, User updateduser){
+        //findById() returns an Optional<User>, not a User.
+        Optional<User> existinguser=userRepository.findById(id);
+        if(existinguser.isPresent()) {
+            User user=existinguser.get();
+
+            user.setFirstname(updateduser.getFirstname());
+            user.setLastname(updateduser.getLastname());
+            user.setEmail(updateduser.getEmail());
+            user.setPhone(updateduser.getPhone());
+            userRepository.save(user);
+
+            return true;
         }
         return false;
     }

@@ -1,25 +1,29 @@
 package com.ecomm.application;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstname;
     private String lastname;
+    private String email;
+    private String phone;
 
-    public User(Long id, String firstname, String lastname) {
+    @Enumerated(EnumType.STRING)
+    private UserRole role=UserRole.CUSTOMER;
+
+    public User(Long id, String firstname, String lastname, String email, String phone, UserRole role) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
     }
 
     public Long getId() {
@@ -44,5 +48,28 @@ public class User {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 }
