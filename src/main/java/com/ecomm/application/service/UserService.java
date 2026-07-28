@@ -1,10 +1,10 @@
-package com.ecomm.application;
+package com.ecomm.application.service;
 
+import com.ecomm.application.entity.User;
+import com.ecomm.application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +55,7 @@ public class UserService {
     */
 
     public void createUser(User user){
+        System.out.println(user.getRole());
         userRepository.save(user);
     }
 

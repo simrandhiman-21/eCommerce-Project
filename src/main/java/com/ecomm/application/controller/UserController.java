@@ -1,9 +1,11 @@
-package com.ecomm.application;
+package com.ecomm.application.controller;
 
+import com.ecomm.application.UserRole;
+import com.ecomm.application.entity.User;
+import com.ecomm.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.config.Task;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
-    private  UserService userService;
+    private UserService userService;
 
 
     //@GetMapping("/users")
@@ -24,6 +26,9 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody User user) {
+        if (user.getRole() == null) {
+            user.setRole(UserRole.CUSTOMER);
+        }
         userService.createUser(user);
         return new ResponseEntity<>("User added Successfully", HttpStatus.OK);
     }

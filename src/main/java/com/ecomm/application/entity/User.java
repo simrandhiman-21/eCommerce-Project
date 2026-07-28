@@ -1,9 +1,11 @@
-package com.ecomm.application;
+package com.ecomm.application.entity;
 
+import com.ecomm.application.UserRole;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name="user_table")
 @NoArgsConstructor
 public class User {
     @Id
@@ -15,7 +17,11 @@ public class User {
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role=UserRole.CUSTOMER;
+    private UserRole role;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="address_id")
+    private Address address;
 
     public User(Long id, String firstname, String lastname, String email, String phone, UserRole role) {
         this.id = id;
@@ -71,5 +77,12 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }
