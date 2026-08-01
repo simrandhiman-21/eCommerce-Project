@@ -3,6 +3,10 @@ package com.ecomm.application.entity;
 import com.ecomm.application.UserRole;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.sql.Timestamp;
 
 @Entity
 @Table(name="user_table")
@@ -19,9 +23,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name="address_id")
     private Address address;
+
+    @CreationTimestamp
+    private Timestamp createdAt;
+    @UpdateTimestamp
+    private Timestamp updatedAt;
 
     public User(Long id, String firstname, String lastname, String email, String phone, UserRole role) {
         this.id = id;
