@@ -1,8 +1,14 @@
 package com.ecomm.application.service;
 
+import com.ecomm.application.UserRole;
+import com.ecomm.application.beans.UserModelMapper;
+import com.ecomm.application.beans.UserRequestBean;
+import com.ecomm.application.beans.UserResponseBean;
 import com.ecomm.application.entity.User;
 import com.ecomm.application.repository.UserRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +19,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private  UserModelMapper userModelMapper;
 
     /*
     //Crud using List<User>
@@ -54,9 +63,13 @@ public class UserService {
     }
     */
 
-    public void createUser(User user){
-        System.out.println(user.getRole());
-        userRepository.save(user);
+    public void createUser(UserRequestBean user){
+//        System.out.println(user.getRole());
+        User newuser=userModelMapper.userMapper(user);
+        if (newuser.getRole() == null) {
+            newuser.setRole(UserRole.CUSTOMER);
+        }
+        userRepository.save(newuser);
     }
 
     public List<User> getAllUsers(){

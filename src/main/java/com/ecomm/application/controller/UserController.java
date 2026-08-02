@@ -1,6 +1,7 @@
 package com.ecomm.application.controller;
 
 import com.ecomm.application.UserRole;
+import com.ecomm.application.beans.UserRequestBean;
 import com.ecomm.application.entity.User;
 import com.ecomm.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody User user) {
-        if (user.getRole() == null) {
-            user.setRole(UserRole.CUSTOMER);
-        }
+    public ResponseEntity<String> createUser(@RequestBody UserRequestBean user) {
         userService.createUser(user);
         return new ResponseEntity<>("User added Successfully", HttpStatus.OK);
     }
