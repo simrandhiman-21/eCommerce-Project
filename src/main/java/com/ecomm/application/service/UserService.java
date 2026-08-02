@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,7 +65,6 @@ public class UserService {
     */
 
     public void createUser(UserRequestBean user){
-//        System.out.println(user.getRole());
         User newuser=userModelMapper.userMapper(user);
         if (newuser.getRole() == null) {
             newuser.setRole(UserRole.CUSTOMER);
@@ -72,12 +72,20 @@ public class UserService {
         userRepository.save(newuser);
     }
 
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    public List<UserResponseBean> getAllUsers(){
+        List<User> userlist=userRepository.findAll();
+        List<UserResponseBean> userResponseBeanList=new ArrayList<>();
+        for(User user:userlist) {
+            userResponseBeanList.add(userModelMapper.userResponseMapper(user));
+        }
+        return userResponseBeanList;
     }
 
-    public Optional<User> getUserById(Long id){
-        return userRepository.findById(id);
+    public UserResponseBean getUserById(Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        return userModelMapper.userResponseMapper(user);
+
     }
 
     public boolean updateUser(Long id, User updateduser){

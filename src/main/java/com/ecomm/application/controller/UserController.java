@@ -2,6 +2,7 @@ package com.ecomm.application.controller;
 
 import com.ecomm.application.UserRole;
 import com.ecomm.application.beans.UserRequestBean;
+import com.ecomm.application.beans.UserResponseBean;
 import com.ecomm.application.entity.User;
 import com.ecomm.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class UserController {
 
     //@GetMapping("/users")
     @RequestMapping(value = "users" ,method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserResponseBean>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
@@ -32,12 +33,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user=userService.getUserById(id);
-            if(user==null){
-            return ResponseEntity.notFound().build();
-        }
-        return new ResponseEntity<>(user.get(),HttpStatus.OK);
+    public UserResponseBean getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 
     @PutMapping("/{id}")
