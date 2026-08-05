@@ -5,6 +5,7 @@ import com.ecomm.application.beans.ProductResponseBean;
 import com.ecomm.application.entity.Product;
 import com.ecomm.application.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +32,15 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductResponseBean>> getAllProduct(){
         return new ResponseEntity<>(productService.getAllProduct(),HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public Product updateProductById(@PathVariable Long id,@RequestParam String updatevalue){
+        return productService.updateProductById(id,updatevalue);
+    }
+
+    @GetMapping("/search")
+    public List<Product> searchProduct(@RequestParam String keyword){
+        return productService.searchProduct(keyword);
     }
 }
