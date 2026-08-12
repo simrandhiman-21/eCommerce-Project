@@ -1,10 +1,10 @@
 package com.ecomm.application.repository;
 
-import com.ecomm.application.entity.Cart;
+import com.ecomm.application.entity.CartItem;
 import org.hibernate.query.criteria.JpaCollectionJoin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CartRepository extends JpaRepository<Cart,Long> {
+public interface CartRepository extends JpaRepository<CartItem,Long> {
 }
