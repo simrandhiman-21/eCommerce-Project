@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartService {
@@ -31,20 +32,26 @@ public class CartService {
 
        CartItem cartItem=new CartItem();
 
-
-
-       User user=userRepository.findById(Long.parseLong(userId)).orElseThrow(()->new RuntimeException("User not found"));
+       Optional<User> userOpt=userRepository.findById(Long.parseLong(userId));
+       User user=userOpt.get();
        if(user!=null && user.getId()!=null) {
            cartItem.setUser(user);
        }else{
            throw new RuntimeException("User not found");
        }
-       Product product=productRepository.findById(cartRequestBean.getProductId()).orElseThrow(()->new RuntimeException("Product not found"));
+       Optional<Product> productOpt=productRepository.findById(cartRequestBean.getProductId());
+       Product product=productOpt.get();
        if(product!=null && product.getId()!=null) {
            cartItem.setProduct(product);
        }else{
            throw new RuntimeException("Product not found");
        }
+       //if(product.getStockquantity()>0 && product.getStockquantity()>product.getStockquantity()){}
+
+       // so untill now we have validated user exist and product exist and quantity exist now 2 options
+       // product already exist in card , update quantity ,
+       // create new cart
+       
        cartItem.setQuantity(cartRequestBean.getQuantity());
        cartRepository.save(cartItem);
     }

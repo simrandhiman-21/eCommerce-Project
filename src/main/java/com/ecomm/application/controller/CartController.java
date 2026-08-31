@@ -32,6 +32,4 @@ public class CartController {
 //        return cartService.getAllCartItems();
 //    }
 
-
-
 }
