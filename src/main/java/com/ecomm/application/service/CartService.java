@@ -18,42 +18,51 @@ import java.util.Optional;
 public class CartService {
 
     @Autowired
-    CartRepository cartRepository;
+    private CartRepository cartRepository;
     @Autowired
-    CartModelMapper cartModelMapper;
+    private CartModelMapper cartModelMapper;
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
 
-   public void addItem(String userId,CartRequestBean cartRequestBean){
-       //CartItem cart=CartModelMapper.MapBeanToEntity(cartRequestBean);
-
-       CartItem cartItem=new CartItem();
-
+   public boolean addItem(String userId,CartRequestBean cartRequestBean){
+       // check if user exist or not
        Optional<User> userOpt=userRepository.findById(Long.parseLong(userId));
+       if(userOpt.isEmpty()) return false;
        User user=userOpt.get();
-       if(user!=null && user.getId()!=null) {
-           cartItem.setUser(user);
-       }else{
-           throw new RuntimeException("User not found");
-       }
-       Optional<Product> productOpt=productRepository.findById(cartRequestBean.getProductId());
-       Product product=productOpt.get();
-       if(product!=null && product.getId()!=null) {
-           cartItem.setProduct(product);
-       }else{
-           throw new RuntimeException("Product not found");
-       }
-       //if(product.getStockquantity()>0 && product.getStockquantity()>product.getStockquantity()){}
 
+       // check if product exist or not
+       Optional<Product> productOpt=productRepository.findById(cartRequestBean.getProductId());
+       if(productOpt.isEmpty()) return false;
+       Product product=productOpt.get();
+
+       // check stockquantity
+       if (Long.parseLong(product.getStockquantity()) < Long.parseLong(cartRequestBean.getQuantity())) {
+           return false;
+       }
        // so untill now we have validated user exist and product exist and quantity exist now 2 options
        // product already exist in card , update quantity ,
        // create new cart
-       
-       cartItem.setQuantity(cartRequestBean.getQuantity());
-       cartRepository.save(cartItem);
+
+       CartItem cartItemexist=cartRepository.findByProductAndUser(product,user);
+       if(cartItemexist!=null){
+           cartItemexist.setQuantity(cartRequestBean.getQuantity());
+           cartItemexist.setPrice(product.getPrice() * Long.parseLong(cartRequestBean.getQuantity()));
+           cartRepository.save(cartItemexist);
+       }
+
+
+       else{
+           CartItem newcartItem=new CartItem();
+           newcartItem.setUser(user);
+           newcartItem.setProduct(product);
+           newcartItem.setQuantity(cartRequestBean.getQuantity());
+           cartItemexist.setPrice(product.getPrice() * Long.parseLong(cartRequestBean.getQuantity()));
+           cartRepository.save(newcartItem);
+       }
+       return true;
     }
 
 //    public List<CartItem> getAllCartItems(){

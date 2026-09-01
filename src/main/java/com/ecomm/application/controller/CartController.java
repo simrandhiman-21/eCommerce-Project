@@ -23,8 +23,11 @@ public class CartController {
 
     @PostMapping
     public ResponseEntity<String> addItem(@RequestHeader ("User-ID")String userId, @RequestBody CartRequestBean cartRequestBean){
-        cartService.addItem(userId,cartRequestBean);
-        return  new ResponseEntity<>("Product added in Cart Successfully",HttpStatus.CREATED);
+        Boolean itemadded=cartService.addItem(userId,cartRequestBean);
+        if(itemadded){
+            return new ResponseEntity<>("Product added in Cart Successfully",HttpStatus.CREATED);
+        }
+        return  new ResponseEntity<>("User not found OR Product not fount OR Product Out of Stock",HttpStatus.BAD_REQUEST);
     }
 
 //    @GetMapping("/getAllCartItems")
