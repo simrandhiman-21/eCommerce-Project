@@ -30,9 +30,16 @@ public class CartController {
         return  new ResponseEntity<>("User not found OR Product not fount OR Product Out of Stock",HttpStatus.BAD_REQUEST);
     }
 
-//    @GetMapping("/getAllCartItems")
-//    public List<CartItem> getAllCartItems(){
-//        return cartService.getAllCartItems();
-//    }
-
+    @DeleteMapping("/delete/{productId}")
+    public boolean DeleteItemFromCart(@RequestHeader("User-ID") String userId, @PathVariable String productId){
+        return cartService.deleteItemFromCart(userId,productId);
+    }
+    @GetMapping
+    public List<CartItem> fetchCartItemByUserId(@RequestHeader("User-ID") String userId){
+           return cartService.findCartItemByUserId(userId);
+    }
+    @GetMapping("/all")
+    public List<CartItem> FetchAllCartItems(){
+        return cartService.fetchCartItemAll();
+    }
 }
