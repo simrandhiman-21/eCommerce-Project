@@ -1,10 +1,12 @@
 package com.ecomm.application.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Data
 @Table(name = "order_item")
 public class OrderItem {
 
