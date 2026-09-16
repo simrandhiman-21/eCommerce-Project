@@ -43,7 +43,7 @@ public class UserModelMapper {
         addressBean .setCountry(user.getAddress().getCountry());
         addressBean .setZipcode(user.getAddress().getZipcode());
 
-        userResponseBean.setUserAddressBean(addressBean );
+        userResponseBean.setUserAddressBean(addressBean);
 
         return userResponseBean;
     }

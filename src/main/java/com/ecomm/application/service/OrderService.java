@@ -6,6 +6,7 @@ import com.ecomm.application.entity.*;
 import com.ecomm.application.repository.CartRepository;
 import com.ecomm.application.repository.OrderRepository;
 import com.ecomm.application.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class OrderService {
 
     @Autowired
@@ -65,7 +67,7 @@ public class OrderService {
 
         //save order
         orderRepository.save(order);
-        cartRepository.deleteById(user.getId()); // clear the cart after order placed
+        cartRepository.deleteAll(cartItemList); // clear the cart after order placed
 
         OrderResponseBean orderResponseBean = mapToOrderResponse(order);
         return ResponseEntity.ok(orderResponseBean);

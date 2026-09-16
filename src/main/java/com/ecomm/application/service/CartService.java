@@ -58,7 +58,7 @@ public class CartService {
             newcartItem.setUser(user);
             newcartItem.setProduct(product);
             newcartItem.setQuantity(cartRequestBean.getQuantity());
-            cartItemexist.setPrice(product.getPrice() * Long.parseLong(cartRequestBean.getQuantity()));
+            newcartItem.setPrice(product.getPrice() * Long.parseLong(cartRequestBean.getQuantity()));
             cartRepository.save(newcartItem);
         }
         return true;
